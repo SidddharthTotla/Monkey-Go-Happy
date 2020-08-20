@@ -31,21 +31,22 @@ function setup() {
  // createCanvas(600, 300);
 
   //create monkey sprite, set its animation and scaling it down 
-  monkey = createSprite(80, 225, 10, 10);
+  monkey = createSprite(80, 295, 10, 10);
   monkey.addAnimation("monkeyI", monkeyImage);
   monkey.scale = 0.15;
 
   //create background sprite, set its animation and scaling it down
-  backGround = createSprite(300, 150, 600, 10);
+  backGround = createSprite(300, 150, 900, 10);
   backGround.addImage("jungle", bgImage);
-  backGround.scale = 0.7;
+  backGround.scale = 0.915;
+  backGround.x = backGround.width / 2;
   //placing the background behind the monkey and giving it a velocity
   backGround.depth = monkey.depth - 1;
-  backGround.velocityX = -10;
+  
 
   //creating the ground sprite, seting the velocity, making it invisible
-  ground = createSprite(300, 280, 600, 10);
-  ground.velocityX = -10;
+  ground = createSprite(300, 299, 600, 10);
+ 
   ground.visible = false;
 
   //create game over sprite, add image, make it invisible
@@ -54,10 +55,10 @@ function setup() {
   gameOver.visible = false;
 
   //create restart sprite, add image, make it invisible and scale it down
-  restart = createSprite(300, 170, 10, 10);
-  restart.addImage("restartimage", rsImage);
-  restart.scale = 0.5;
-  restart.visible = false;
+  //restart = createSprite(300, 170, 10, 10);
+  //restart.addImage("restartimage", rsImage);
+ // restart.scale = 0.5;
+  //restart.visible = false;
 
   //create banana group
   bananaGroup = createGroup();
@@ -80,13 +81,19 @@ function setup() {
 
 function draw() {
 
-  createCanvas(600,300);
-  background(255);
+  createCanvas(500,300);
+  background("jungle.jpg");
 
   //creating infinite invisible ground
+  ground.velocityX = -10;
+  if(ground.x<0){
   ground.x = ground.width / 2;
+  }
   //creating infinite background  
-  backGround.x = backGround.width / 3;
+  backGround.velocityX = -10;
+  if(backGround.x<0){
+  backGround.x = backGround.width / 2;
+  }
   //collinding the monkey against the ground 
   monkey.collide(ground);
   //setting the gravity for the monkey 
@@ -142,7 +149,8 @@ function draw() {
   if (count > 1) {
     gameState = END;
   }
-
+  console.log(camera.position.x);
+  console.log(camera.position.y);
   //condition for end state
   if (gameState === END) {
     //making the restart sprite visible
@@ -167,8 +175,8 @@ function draw() {
     gameOver.visible = false;
   }
 
-  camera.position.x = monkey.x;
-  camera.position.y = monkey.y;
+  //camera.position.x = monkey.x;
+  //camera.position.y = monkey.y;
 
   //camera.position.x = camera.position.x+5;
   drawSprites();
@@ -185,6 +193,9 @@ function food() {
   if (World.frameCount % 80 === 0) {
     //creating the banana sprite and  randomizing the spawn point
     banana = createSprite(600, random(100, 140), 10, 10);
+    //spawning bananas using camera position
+    camera.position.x = banana.x;
+    camera.position.y = banana.y;
     //setting animation for the 
     banana.addImage("FOOD", foodImage);
     //scaling down the banana  
@@ -203,7 +214,10 @@ function obstacles() {
   //Spawing the obstacles after every 300 frames 
   if (World.frameCount % 300 === 0) {
     //creating the obstacle sprite     
-    obstacle = createSprite(600, 250, 10, 10);
+    obstacle = createSprite(600, 275, 10, 10);
+    //spawning obstacles using camera position
+    camera.position.x = obstacle.x;
+    camera.position.y = obstacle.y;
     //setting the animation for the obstacles    
     obstacle.addImage("STONE", obstacleImage);
     //Scaling down the obstacles 
